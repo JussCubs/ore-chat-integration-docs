@@ -1,41 +1,35 @@
-# ORE Chat Integration Docs
+# ORE Chat Integration
 
-Public integration notes for adding the ORE community chat experience to an ORE-adjacent app, including refinORE-style mining dashboards and gOREat Wall / Motherlode prediction-market frontends.
+Simple public docs for embedding the existing ORE chat into an ORE-related app.
 
-This repo is intentionally **integration-level only**: auth flow, realtime reads, send/reaction calls, UI placement, and safety boundaries. It does not include private strategy logic, backend credentials, proprietary mining heuristics, or production secrets.
+This is just a lightweight frontend integration guide for reading chat, authenticating with a wallet signature, and sending messages/reactions through the public ORE chat API. It is not a private chat system and it does not include mining, prediction-game, or strategy logic.
 
-## Quick links
+## Docs
 
-- [ORE Supply chat API integration](docs/ore-supply-chat.md)
-- [Embed chat in a refinORE-style mining app](docs/refinore-embedded-chat.md)
-- [Embed chat in a gOREat Wall / tile-market app](docs/goreat-wall-tiles-chat.md)
-- [Minimal Next.js client example](examples/nextjs)
+- [ORE chat API basics](docs/ore-chat.md)
+- [Embedding chat in an app](docs/embed-chat.md)
+- [Minimal Next.js example](examples/nextjs)
 
-## What you can build
+## What this covers
 
-- Live community chat using ORE Supply-compatible public endpoints.
-- Wallet signature auth for sending messages, reactions, and typing indicators.
-- A collapsible desktop sidebar or mobile bottom-sheet chat UI.
-- A shared chat panel beside ORE mining or prediction-market state without interfering with transactions.
+- Load recent ORE chat history.
+- Subscribe to realtime chat updates with Server-Sent Events.
+- Authenticate a connected wallet with `signMessage`.
+- Send chat messages, reactions, and typing indicators.
+- Add chat as a simple sidebar/panel without touching app transaction flows.
 
-## Core integration shape
+## What this does not cover
 
-```mermaid
-flowchart LR
-  Wallet[User wallet] -->|sign auth message| App[Your frontend]
-  App -->|POST /auth/login| OreApi[api.ore.supply]
-  OreApi -->|JWT| App
-  App -->|EventSource /connect| Stream[Realtime chat stream]
-  App -->|GET /chat/history| History[Message history]
-  App -->|POST /chat/send, /chat/react, /chat/typing| Writes[Authenticated chat writes]
+- Private APIs, secrets, or backend credentials.
+- Mining or prediction-game strategy logic.
+- Any transaction, escrow, claim, settlement, or cranking code.
+- A new chat backend — this uses the existing ORE chat.
+
+## Base API
+
+```txt
+https://api.ore.supply
 ```
-
-## Non-goals
-
-- No private key handling.
-- No escrow, mining, tile-buying, or settlement code.
-- No hidden alpha / strategy internals.
-- No server-side proxy required for the public chat flow.
 
 ## License
 
